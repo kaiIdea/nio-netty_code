@@ -10,10 +10,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LoggingHandler;
 import netty.Chat.protocol.MessageCodecShare;
 import netty.Chat.protocol.ProcotolFrameDecoder;
-import netty.Chat.server.handler.ChatServerHandler;
-import netty.Chat.server.handler.GroupChatServerHandler;
-import netty.Chat.server.handler.GroupCreateServerHandler;
-import netty.Chat.server.handler.LoginServerHandler;
+import netty.Chat.server.handler.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +43,7 @@ public class ChatServer {
                             ch.pipeline().addLast(new ChatServerHandler());
                             ch.pipeline().addLast(new GroupCreateServerHandler());
                             ch.pipeline().addLast(new GroupChatServerHandler());
+                            ch.pipeline().addLast(new GroupQuitServerHandler());
                         }
                     })
                     .bind(8080).sync();

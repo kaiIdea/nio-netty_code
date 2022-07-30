@@ -64,6 +64,7 @@ public class ChooseMenuHandler extends ChannelOutboundHandlerAdapter {
             case "gjoin":
                 break;
             case "gquit":
+                message = new GroupQuitRequestMessage(userName);
                 break;
             case "quit":
                 break;

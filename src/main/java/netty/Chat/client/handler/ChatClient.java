@@ -13,6 +13,8 @@ import netty.Chat.client.handler.groupChat.GroupChatClienInHandler;
 import netty.Chat.client.handler.groupChat.GroupChatClienOutHandler;
 import netty.Chat.client.handler.groupCreate.GroupCreateClienInHandler;
 import netty.Chat.client.handler.groupCreate.GroupCreateClienOutHandler;
+import netty.Chat.client.handler.groupQuit.GroupQuitClientInHandler;
+import netty.Chat.client.handler.groupQuit.GroupQuitClientOutHandler;
 import netty.Chat.client.handler.login.LoginClientInHandler;
 import netty.Chat.protocol.MessageCodecShare;
 import netty.Chat.protocol.ProcotolFrameDecoder;
@@ -48,6 +50,8 @@ public class ChatClient {
                             ch.pipeline().addLast(new GroupCreateClienOutHandler());
                             ch.pipeline().addLast(new GroupChatClienInHandler());
                             ch.pipeline().addLast(new GroupChatClienOutHandler());
+                            ch.pipeline().addLast(new GroupQuitClientInHandler());
+                            ch.pipeline().addLast(new GroupQuitClientOutHandler());
 
                         }
                     })
