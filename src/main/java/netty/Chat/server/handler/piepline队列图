@@ -1,5 +1,5 @@
 入站
-head-->ProcotolFrameDecoder[解码]--》loggingHandler--》messageCodec--》LoginServerHandler[登录]--》ChatServerHandler[单聊]-->tail
+head-->ProcotolFrameDecoder[解码]--》loggingHandler--》messageCodec--》LoginServerHandler[登录]--》ChatServerHandler[单聊]--》GroupCreateServerHandler[创建群聊]--》GroupChatServerHandler[群聊]-->tail
 
 出站
 head<--ProcotolFrameDecoder[编码] <--tail
