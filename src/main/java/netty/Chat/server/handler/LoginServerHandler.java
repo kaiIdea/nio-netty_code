@@ -1,6 +1,5 @@
-package netty.Chat.server;
+package netty.Chat.server.handler;
 
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import netty.Chat.message.LoginRequestMessage;

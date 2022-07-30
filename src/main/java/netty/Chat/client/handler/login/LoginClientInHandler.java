@@ -1,4 +1,4 @@
-package netty.Chat.client;
+package netty.Chat.client.handler.login;
 
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;

@@ -1,14 +1,11 @@
-package netty.Chat.server;
+package netty.Chat.server.handler;
 
-import io.netty.channel.*;
 import io.netty.channel.embedded.EmbeddedChannel;
 import io.netty.handler.logging.LoggingHandler;
-import netty.Chat.client.ChatClientInHandler;
-import netty.Chat.client.ChatClientOutHandler;
-import netty.Chat.client.LoginClientInHandler;
-import netty.Chat.client.LoginClientOutHandler;
+import netty.Chat.client.handler.chat.ChatClientInHandler;
+import netty.Chat.client.handler.chat.ChatClientOutHandler;
+import netty.Chat.client.handler.login.LoginClientInHandler;
 import netty.Chat.message.ChatRequestMessage;
-import netty.Chat.message.LoginRequestMessage;
 import netty.Chat.message.LoginResponseMessage;
 import netty.Chat.protocol.MessageCodecShare;
 import netty.Chat.protocol.ProcotolFrameDecoder;

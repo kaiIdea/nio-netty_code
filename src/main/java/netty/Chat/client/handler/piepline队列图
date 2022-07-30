@@ -1,0 +1,7 @@
+
+
+入站
+head-->ProcotolFrameDecoder[解码]--》loggingHandler--》messageCodec--》LoginClientInHandler[登录]--》ChatClientInHandler[单聊]--》GroupCreateClienInHandler[创建群聊结果]--》GroupChatClienInHandler[群聊] -->tail
+
+出站
+head<--ProcotolFrameDecoder[编码]《--ChatClientOutHandler[单聊]《-- ChooseMenuHandler[主菜单]《--GroupCreateClienOutHandler[创建群聊]《--GroupChatClienOutHandler[群聊] <--tail

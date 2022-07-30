@@ -1,11 +1,10 @@
-package netty.Chat;
+package netty.Chat.server.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.embedded.EmbeddedChannel;
-import netty.Chat.server.TestChatHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

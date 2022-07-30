@@ -1,4 +1,4 @@
-package netty.Chat.client;
+package netty.Chat.client.handler.chat;
 
 import io.netty.channel.*;
 import netty.Chat.message.ChatRequestMessage;
@@ -24,6 +24,7 @@ public class ChatClientOutHandler extends ChannelOutboundHandlerAdapter {
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
         if(!(msg instanceof ChatRequestMessage)){
+            super.write(ctx, msg, promise);
             return;
         }
         log.info("ChatRequestMessage {}",msg);
@@ -55,7 +56,6 @@ public class ChatClientOutHandler extends ChannelOutboundHandlerAdapter {
 
     @Override
     public void flush(ChannelHandlerContext ctx) throws Exception {
-        log.info("【ChatClientOutHandler.flush】");
         super.flush(ctx);
     }
 }

@@ -1,11 +1,11 @@
-package netty.Chat.client;
+package netty.Chat.client.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
-import netty.Chat.message.ChatRequestMessage;
-import netty.Chat.message.ChooseMenuRequestMessage;
-import netty.Chat.message.Message;
+import netty.Chat.message.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
@@ -16,6 +16,7 @@ import java.util.Scanner;
  */
 public class ChooseMenuHandler extends ChannelOutboundHandlerAdapter {
 
+    public static Logger log = LoggerFactory.getLogger(ChooseMenuHandler.class);
 
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
@@ -27,6 +28,7 @@ public class ChooseMenuHandler extends ChannelOutboundHandlerAdapter {
         String userName = choose.getUserName();
         new Thread(()->{
             Scanner scanner = new Scanner(System.in);
+            log.info("*********主菜单-"+Thread.currentThread().getId()+Thread.currentThread().getName());
             //登录成功,选择菜单，发送消息
             System.out.println("==================================");
             System.out.println("send 单聊");
@@ -40,6 +42,7 @@ public class ChooseMenuHandler extends ChannelOutboundHandlerAdapter {
             String command = scanner.nextLine();
             dispatchRequest(command,ctx,userName);
         },"choose menu").start();
+        log.info("*********choose menu thread dead");
     }
 
     //跳转到对应聊天出站write,然后进行消息处理出战
@@ -51,8 +54,10 @@ public class ChooseMenuHandler extends ChannelOutboundHandlerAdapter {
                 message = new ChatRequestMessage(userName);
                 break;
             case "gsend":
+                message = new GroupChatRequestMessage(userName);
                 break;
             case "gcreate":
+                message = new GroupCreateRequestMessage(userName);
                 break;
             case "gmembers":
                 break;
@@ -64,7 +69,8 @@ public class ChooseMenuHandler extends ChannelOutboundHandlerAdapter {
                 break;
             default:
         }
-        ctx.writeAndFlush(message);
+        //通过channel调用writeAndFlush出站，开始从tail结点依次执行
+        ctx.channel().writeAndFlush(message);
     }
 
     @Override

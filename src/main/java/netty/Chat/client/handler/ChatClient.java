@@ -1,4 +1,4 @@
-package netty.Chat.client;
+package netty.Chat.client.handler;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -7,6 +7,13 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LoggingHandler;
+import netty.Chat.client.handler.chat.ChatClientInHandler;
+import netty.Chat.client.handler.chat.ChatClientOutHandler;
+import netty.Chat.client.handler.groupChat.GroupChatClienInHandler;
+import netty.Chat.client.handler.groupChat.GroupChatClienOutHandler;
+import netty.Chat.client.handler.groupCreate.GroupCreateClienInHandler;
+import netty.Chat.client.handler.groupCreate.GroupCreateClienOutHandler;
+import netty.Chat.client.handler.login.LoginClientInHandler;
 import netty.Chat.protocol.MessageCodecShare;
 import netty.Chat.protocol.ProcotolFrameDecoder;
 import org.slf4j.Logger;
@@ -31,12 +38,16 @@ public class ChatClient {
                         @Override
                         protected void initChannel(NioSocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new ProcotolFrameDecoder());
-                            ch.pipeline().addLast(loggingHandler);
+                            //ch.pipeline().addLast(loggingHandler);
                             ch.pipeline().addLast(messageCodec);
                             ch.pipeline().addLast(new LoginClientInHandler());
                             ch.pipeline().addLast(new ChatClientInHandler());
                             ch.pipeline().addLast(new ChatClientOutHandler());
                             ch.pipeline().addLast(new ChooseMenuHandler());
+                            ch.pipeline().addLast(new GroupCreateClienInHandler());
+                            ch.pipeline().addLast(new GroupCreateClienOutHandler());
+                            ch.pipeline().addLast(new GroupChatClienInHandler());
+                            ch.pipeline().addLast(new GroupChatClienOutHandler());
 
                         }
                     })
