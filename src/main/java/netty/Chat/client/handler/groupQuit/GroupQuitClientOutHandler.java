@@ -3,6 +3,7 @@ package netty.Chat.client.handler.groupQuit;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
+import io.netty.util.internal.StringUtil;
 import netty.Chat.message.ChooseMenuRequestMessage;
 import netty.Chat.message.GroupCreateRequestMessage;
 import netty.Chat.message.GroupQuitRequestMessage;
@@ -35,6 +36,9 @@ public class GroupQuitClientOutHandler extends ChannelOutboundHandlerAdapter {
                 System.out.println("qm 退出当前菜单目录");
                 System.out.println("==================================");
                 String line = scanner.nextLine();
+                if(StringUtil.isNullOrEmpty(line)){
+                    continue;
+                }
                 String[] s = line.split(" ");
                 if("quit".equals(s[0])){
                     message.setGroupName(s[1]);

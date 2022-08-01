@@ -28,6 +28,7 @@ public class GroupQuitServerHandler extends SimpleChannelInboundHandler<GroupQui
     protected void channelRead0(ChannelHandlerContext ctx, GroupQuitRequestMessage message) throws Exception {
         String groupName = message.getGroupName();
         String username = message.getUsername();
+        List<Channel> channels = GroupSessionFactory.getGroupSession().getMembersChannel(groupName);
         Group group = GroupSessionFactory.getGroupSession().removeMember(groupName, username);
         if(null == group){
             ctx.writeAndFlush(new GroupQuitResponseMessage(false,"群组或者成员不存在"));
@@ -35,6 +36,10 @@ public class GroupQuitServerHandler extends SimpleChannelInboundHandler<GroupQui
         }
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))+" - "+username;
         GroupQuitResponseMessage responseMessage = new GroupQuitResponseMessage(true,time+" 退出群聊");
-        ctx.writeAndFlush(responseMessage);
+        Iterator<Channel> iterator = channels.iterator();
+        while (iterator.hasNext()){
+            Channel channel = iterator.next();
+            channel.writeAndFlush(responseMessage);
+        }
     }
 }

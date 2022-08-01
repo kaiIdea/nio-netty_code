@@ -1,6 +1,7 @@
 package netty.Chat.client.handler.chat;
 
 import io.netty.channel.*;
+import io.netty.util.internal.StringUtil;
 import netty.Chat.message.ChatRequestMessage;
 import netty.Chat.message.ChooseMenuRequestMessage;
 import org.slf4j.Logger;
@@ -37,19 +38,24 @@ public class ChatClientOutHandler extends ChannelOutboundHandlerAdapter {
                 System.out.println("==================================");
                 Scanner scanner = new Scanner(System.in);
                 String text = scanner.nextLine();
-                String[] strs = text.split(" ");
-                if("send".equals(strs[0])){
-                    message.setTo(strs[1]);
-                    message.setContent(strs[2]);
-                    ctx.writeAndFlush(message);
+                if(StringUtil.isNullOrEmpty(text)){
+                    continue;
+                }else {
+                    String[] strs = text.split(" ");
+                    if("send".equals(strs[0])){
+                        message.setTo(strs[1]);
+                        message.setContent(strs[2]);
+                        ctx.writeAndFlush(message);
+                    }
+                    //退出当前菜单页
+                    if("qm".equals(strs[0])){
+                        //从出站tail结点,开始重新执行
+                        ctx.channel().writeAndFlush(new ChooseMenuRequestMessage(message.getFrom()));
+                        //让这个异步线程结束执行
+                        break;
+                    }
                 }
-                //退出当前菜单页
-                if("qm".equals(strs[0])){
-                    //从出站tail结点,开始重新执行
-                    ctx.channel().writeAndFlush(new ChooseMenuRequestMessage(message.getFrom()));
-                    //让这个异步线程结束执行
-                    break;
-                }
+
             }
         },"chat input").start();
     }
@@ -57,5 +63,15 @@ public class ChatClientOutHandler extends ChannelOutboundHandlerAdapter {
     @Override
     public void flush(ChannelHandlerContext ctx) throws Exception {
         super.flush(ctx);
+    }
+
+    public static void main(String[] args) {
+        int i = 1;
+        while (true){
+            if(1 == i){
+                return;
+            }
+            System.out.println("1111");
+        }
     }
 }

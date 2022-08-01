@@ -1,8 +1,9 @@
-package netty.Chat.client.handler;
+package netty.Chat.client;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
+import io.netty.util.internal.StringUtil;
 import netty.Chat.message.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,14 +36,15 @@ public class ChooseMenuHandler extends ChannelOutboundHandlerAdapter {
             System.out.println("gsend 群聊");
             System.out.println("gcreate 发起群聊");
             System.out.println("gmembers 查询群聊");
-            System.out.println("gjoin 加入群聊");
+            System.out.println("join 加入群聊");
             System.out.println("gquit 退出群聊");
             System.out.println("quit 退出");
             System.out.println("==================================");
             String command = scanner.nextLine();
-            dispatchRequest(command,ctx,userName);
+            if(!StringUtil.isNullOrEmpty(command)){
+                dispatchRequest(command,ctx,userName);
+            }
         },"choose menu").start();
-        log.info("*********choose menu thread dead");
     }
 
     //跳转到对应聊天出站write,然后进行消息处理出战
@@ -60,8 +62,10 @@ public class ChooseMenuHandler extends ChannelOutboundHandlerAdapter {
                 message = new GroupCreateRequestMessage(userName);
                 break;
             case "gmembers":
+                message = new GroupMembersRequestMessage(userName);
                 break;
-            case "gjoin":
+            case "join":
+                message = new GroupJoinRequestMessage(userName);
                 break;
             case "gquit":
                 message = new GroupQuitRequestMessage(userName);
@@ -70,8 +74,10 @@ public class ChooseMenuHandler extends ChannelOutboundHandlerAdapter {
                 break;
             default:
         }
-        //通过channel调用writeAndFlush出站，开始从tail结点依次执行
-        ctx.channel().writeAndFlush(message);
+        if (null != message) {
+            //通过channel调用writeAndFlush出站，开始从tail结点依次执行
+            ctx.channel().writeAndFlush(message);
+        }
     }
 
     @Override

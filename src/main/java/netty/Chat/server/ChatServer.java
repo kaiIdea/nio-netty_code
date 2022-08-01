@@ -44,6 +44,8 @@ public class ChatServer {
                             ch.pipeline().addLast(new GroupCreateServerHandler());
                             ch.pipeline().addLast(new GroupChatServerHandler());
                             ch.pipeline().addLast(new GroupQuitServerHandler());
+                            ch.pipeline().addLast(new GroupJoinServerHandler());
+                            ch.pipeline().addLast(new GroupMembersServerHandler());
                         }
                     })
                     .bind(8080).sync();

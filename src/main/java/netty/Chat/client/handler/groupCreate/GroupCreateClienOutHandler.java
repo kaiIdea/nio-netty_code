@@ -3,13 +3,11 @@ package netty.Chat.client.handler.groupCreate;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
+import io.netty.util.internal.StringUtil;
 import netty.Chat.message.ChooseMenuRequestMessage;
 import netty.Chat.message.GroupCreateRequestMessage;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @Auther: YangKai
@@ -36,10 +34,13 @@ public class GroupCreateClienOutHandler extends ChannelOutboundHandlerAdapter {
                 System.out.println("qm 退出当前菜单目录");
                 System.out.println("==================================");
                 String line = scanner.nextLine();
+                if(StringUtil.isNullOrEmpty(line)){
+                    continue;
+                }
                 String[] s = line.split(" ");
-                if("gcreate".equals(s[0])){
+                if("gcreate".equals(s[0]) && !StringUtil.isNullOrEmpty(s[2])){
                     message.setGroupName(s[1]);
-                    HashSet<String> set = new HashSet<>(Arrays.asList(s[2]));
+                    HashSet<String> set = new HashSet<>(Arrays.asList(s[2].split(",")));
                     message.setMembers(set);
                     ctx.writeAndFlush(message);
                 }
@@ -56,4 +57,5 @@ public class GroupCreateClienOutHandler extends ChannelOutboundHandlerAdapter {
     public void flush(ChannelHandlerContext ctx) throws Exception {
         super.flush(ctx);
     }
+
 }

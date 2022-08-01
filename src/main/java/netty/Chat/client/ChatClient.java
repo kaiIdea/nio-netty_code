@@ -1,4 +1,4 @@
-package netty.Chat.client.handler;
+package netty.Chat.client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -13,6 +13,10 @@ import netty.Chat.client.handler.groupChat.GroupChatClienInHandler;
 import netty.Chat.client.handler.groupChat.GroupChatClienOutHandler;
 import netty.Chat.client.handler.groupCreate.GroupCreateClienInHandler;
 import netty.Chat.client.handler.groupCreate.GroupCreateClienOutHandler;
+import netty.Chat.client.handler.groupJoin.GroupJoinClientInHandler;
+import netty.Chat.client.handler.groupJoin.GroupJoinClientOutHandler;
+import netty.Chat.client.handler.groupMembers.GroupMembersClientInHandler;
+import netty.Chat.client.handler.groupMembers.GroupMembersClientOutHandler;
 import netty.Chat.client.handler.groupQuit.GroupQuitClientInHandler;
 import netty.Chat.client.handler.groupQuit.GroupQuitClientOutHandler;
 import netty.Chat.client.handler.login.LoginClientInHandler;
@@ -52,6 +56,10 @@ public class ChatClient {
                             ch.pipeline().addLast(new GroupChatClienOutHandler());
                             ch.pipeline().addLast(new GroupQuitClientInHandler());
                             ch.pipeline().addLast(new GroupQuitClientOutHandler());
+                            ch.pipeline().addLast(new GroupJoinClientInHandler());
+                            ch.pipeline().addLast(new GroupJoinClientOutHandler());
+                            ch.pipeline().addLast(new GroupMembersClientInHandler());
+                            ch.pipeline().addLast(new GroupMembersClientOutHandler());
 
                         }
                     })
